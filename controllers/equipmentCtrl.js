@@ -1,6 +1,6 @@
 const db = require("../lib/db.js");
-require("dotenv").config();
 
+require("dotenv").config();
 
 const path = require("path");
 const fs = require("fs");
@@ -51,7 +51,7 @@ const equipmentCtrl = {
     );
   },
   deleteItem: (req, res) => {
-    const id = req.params.id;
+    const id = req.params.id.substring(5,10);
     db.query(
       `SELECT * FROM equipment WHERE id = ${db.escape(id)}`,
       (err, result) => {
@@ -59,7 +59,7 @@ const equipmentCtrl = {
           throw err;
         } else {
          
-         fs.unlink(`./uploads/${result[0].image}`, function (err) {
+         fs.unlink(path.join(__dirname,`../uploads/${result[0].image}`), function (err) {
           console.log(err);
          
           console.log("File deleted!");
@@ -86,13 +86,13 @@ const equipmentCtrl = {
   },
   update: (req, res) => {
     db.query(
-      `SELECT * FROM equipment WHERE id = ${db.escape(req.params.id)}`,
+      `SELECT * FROM equipment WHERE id = ${db.escape(req.params.id.substring(5,10))}`,
       (err, result) => {
         if (err) {
           throw err;
         } else {
          
-         fs.unlink(`./uploads/${result[0].image}`, function (err) {
+         fs.unlink(path.join(__dirname,`../uploads/${result[0].image}`), function (err) {
           console.log(err);
          
           console.log("File deleted!");
@@ -103,7 +103,7 @@ const equipmentCtrl = {
     const { type, brand, name, description, status } = req.body;
     db.query(
       "UPDATE equipment SET type = ?,brand = ?,name = ?,description = ?,image = ?,status = ? WHERE id = ?",
-      [type, brand, name, description,req.file.filename, status, req.params.id],
+      [type, brand, name, description,req.file.filename, status, req.params.id.substring(5,10)],
       (err, result) => {
         if (err) {
           console.log(err);
@@ -114,9 +114,9 @@ const equipmentCtrl = {
     );
   },
   getImage:(req,res)=>{
-    const image=req.params.id;
+    const image=req.params.id.substring(5,10);
 
-    fs.readFile(`./uploads/${image}`, (err, data) => {
+    fs.readFile(path.join(__dirname,`../uploads/${image}`), (err, data) => {
       if (err) {
         console.error(err)
         return

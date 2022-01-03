@@ -64,13 +64,13 @@ const adminCtrl={
               if(bResult){
                   const token=jwt.sign({
                       id:result[0].id
-                  },process.env.SECRET_KEY,{
+                  },'equi-status-utkarsh-ayush',{
                         expiresIn: '7d'
                   });
 
                   const refresh_token=jwt.sign({
                     id:result[0].id
-                },process.env.REFRESH_TOKEN,{
+                },'equi-status-shyam',{
                       expiresIn: '30d'
                 });
 
@@ -107,13 +107,13 @@ const adminCtrl={
 
         if(!rf_token) return res.status(403).json({msg: "Please login now."})
 
-        jwt.verify(rf_token, process.env.REFRESH_TOKEN, (err, result) => {
+        jwt.verify(rf_token, 'equi-status-shyam', (err, result) => {
             db.query(`SELECT * FROM credential WHERE id = ${db.escape(result[0].id)}`,(err,result)=>{
                 if(!result) return res.status(405).json({msg: "This does not exist."})
       
                 const token=jwt.sign({
                     id:result[0].id
-                },process.env.SECRET_KEY,{
+                },'equi-status-utkarsh-ayush',{
                       expiresIn: '7d'
                 });
  

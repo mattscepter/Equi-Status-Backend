@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api', require('./routes/adminRouter'));
 app.use('/api', require('./routes/equipmentRouter'));
 
-const port = 5000;
+const port = 4000;
 app.listen(port, () => {
   console.log('server up and running on PORT :', port);
 });

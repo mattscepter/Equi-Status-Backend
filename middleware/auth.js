@@ -10,7 +10,7 @@ const auth=async(req,res,next)=>{
         if(!token)
             return res.status(400).json({msg:"Invalid Authentication"});
 
-            const decoded=jwt.verify(token,process.env.SECRET_KEY);
+            const decoded=jwt.verify(token,'equi-status-utkarsh-ayush');
             // { id: '6108454a3590e9117c98fb9e', iat: 1628141308, exp: 1628227708 } after consoling decoded
          
             if(!decoded){
