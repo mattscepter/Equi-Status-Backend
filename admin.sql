@@ -2,7 +2,9 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
---
+CREATE DATABASE equiBackend;
+
+USE equiBackend;
 
 CREATE TABLE `credential` (
   `id` varchar(5) COLLATE utf32_unicode_ci NOT NULL,
