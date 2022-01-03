@@ -1,6 +1,6 @@
 const db = require("../lib/db.js");
 require("dotenv").config();
-const uuid = require("uuid");
+
 
 const path = require("path");
 const fs = require("fs");
@@ -8,12 +8,11 @@ const fs = require("fs");
 const equipmentCtrl = {
   addItem: async (req, res) => {
     try {
-      const { type, brand, name, description, status } = req.body;
+      const {type, brand, name, description, status } = req.body;
 
       db.query(
-        "INSERT INTO equipment (id,type,brand,name,description,status,image,created_on) VALUES (?,?,?,?,?,?,?,?)",
+        "INSERT INTO equipment (type,brand,name,description,status,image,created_on) VALUES (?,?,?,?,?,?,?)",
         [
-          `${uuid.v4()}`,
           type,
           brand,
           name,
@@ -22,6 +21,7 @@ const equipmentCtrl = {
           req.file.filename,
           new Date(),
         ],
+
         (err, result) => {
           if (err) {
             console.log(err);
@@ -29,14 +29,16 @@ const equipmentCtrl = {
             return res.status(200).json({ msg: "Item has been created" });
           }
         }
+       
       );
+      
     } catch (error) {
       return res.status(400).json({ error });
     }
   },
   getItem: (req, res) => {
     db.query(
-      `SELECT * FROM equipment WHERE id = ${db.escape(req.params.id)}`,
+      `SELECT concat('EQUIP', id) as id,type,brand,name,description,status,image,created_on,updated_on FROM equipment WHERE id = ${db.escape(req.params.id.substring(5,10))}`,
       (err, result) => {
         if (err) {
           throw err;
@@ -74,7 +76,7 @@ const equipmentCtrl = {
     });
   },
   getAll: (req, res) => {
-    db.query("SELECT * FROM equipment", (err, result) => {
+    db.query("SELECT concat('EQUIP', id) as id,type,brand,name,description,status,image,created_on,updated_on FROM equipment", (err, result) => {
       if (err) {
         console.log(err);
       } else {
