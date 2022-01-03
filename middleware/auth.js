@@ -17,7 +17,7 @@ const auth=async(req,res,next)=>{
                 return res.status(400).json({msg:"Invalid Authorization"});
 
             }
-            // console.log(decoded)
+            console.log(decoded)
             next();
         
     } catch (error) {
